@@ -61,11 +61,13 @@ struct Point {
  *
  *  The following triangle can be moved downwards once, downwards and left once, downwards twice,
  *  downwards twice and left once, downwards twice and left twice, so on and so forth, as long as 
- *  the number 5 falls outside of its perimeter.
+ *  the number 5  DOESNT fall outside of its perimeter.
  */
 
 struct PossibleShifts {
-    Point _dimensions; // This is really our dimensions in createDimensions
+    // _dimensions is in the format of a point (x,y) but it really represents a dimension
+    // as a (base, height) combination.
+    Point _dimensions; 
     vector<Point> _shifts;
     PossibleShifts(Point point, vector<Point> shifts) : _dimensions(point), _shifts(shifts) {}; 
 };
@@ -82,7 +84,7 @@ struct PossibleShifts {
  *
  *      _allTriangles holds all the possible valid triangle combinations (for each shape base/height combination) and each 
  *      triangle orientation. Given that a triangle has three vertices, each three points represent one triangle.
- *      For instance, a vector may contain 27 points. This means is contains 9 valid triangles. 
+ *      For instance, a vector may contain 27 points. This means it contains 9 valid triangles. 
  *
  */
 
@@ -112,7 +114,6 @@ class Triangle {
 
         vector<Point> createShifts(Point dimensions);
 
-        int inline getArea() const {return _area;};
         int inline getXC() const {return _x;};
         int inline getYC() const {return _y;};
 
@@ -134,7 +135,7 @@ void Triangle::createDimensions(int area, vector<PossibleShifts>& combinations) 
 
     for (int base{2}; base < effectiveArea; ++base) {
         int height;
-        if ((effectiveArea) % base == 0) {
+        if (effectiveArea % base == 0) {
             height = effectiveArea / base;
             combinations.push_back(PossibleShifts(Point(base, height), createShifts(Point(base, height))));
         }
@@ -508,7 +509,7 @@ void printSolution(const vector<Point>& e) {
 
 void mySolution(vector<Triangle>& WIN, int index, vector<Point> solutionVector) {
 
-    // Print the index/triangle I'm operating on for clarity.
+    // Print the index/triangle I'm operating on for clarity as the program cracks the puzzle.
     cout << (std::string(index, '-')) << index << endl;
 
     if (index == WIN.size()) {
