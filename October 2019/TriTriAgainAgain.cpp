@@ -690,7 +690,8 @@ int main() {
     // Holds our 29 triangles.
     vector<Triangle> WIN;
 
-    // Will contain the coordinates of all the triangles for our solves puzzle.
+    // Will hold the answer 
+    // Every three points will be the correct vertices of an individual triangle
     vector<Point> ExistingPoints;
     
     Triangle T1(2,3,0), T2(18,7,0), T3(12,2,1), T4(4,13,1), T5(3,4,2), T6(7,11,2),
