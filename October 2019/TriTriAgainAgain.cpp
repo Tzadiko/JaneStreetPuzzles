@@ -12,8 +12,7 @@ using std::endl;
 ///////////////
 
 /*
- *  Represents the size of the grid
- *  in which the triangles lie.
+ *  Represents the lengt of the square grid in which the triangles lie. 
  */
 
 const int MATRIX_MAX = 17;
