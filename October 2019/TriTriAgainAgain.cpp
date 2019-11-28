@@ -71,8 +71,9 @@ struct Point {
  *  |5____\       |5   \
  *                |_____\        
  *
- *  The following triangle can be moved downwads at most twice, and over left at most once
- *  before the number 5 falls outside of its perimeter.
+ *  The following triangle can be moved downwards once, downwards and left once, downwards twice,
+ *  downwards twice and left once, downwards twice and left twice, so on and so forth, as long as 
+ *  the number 5 falls outside of its perimeter.
  */
 
 struct PossibleShifts {
