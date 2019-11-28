@@ -479,6 +479,8 @@ bool triangleIsContainingOtherTriangle(vector<Point>& triangleVertices, Point p,
      *  a valid set of vertices (valid as in they are on the 17 by 17 board, and contain the
      *  1 by 1 box representing the triangles area within them); but, these vertices cross
      *  with Triangle #2, which has a valid set of vertices that cross Triangle #1s
+     *  
+     *  THIS CUTS RUNTIME IN HALF.
      */
 
 void preProcessValidTriangles(vector<Triangle>& WIN) {
@@ -494,96 +496,15 @@ void preProcessValidTriangles(vector<Triangle>& WIN) {
                 Point c(WIN[k].getXC() + 1, WIN[k].getYC() + 1);
                 Point d(WIN[k].getXC() + 1, WIN[k].getYC());
 
-                if (doIntersect(p, q, a, b)) {
+                if (doIntersect(p, q, a, b) || doIntersect(p, q, a, c) || doIntersect(p, q, a, d) ||
+                    doIntersect(p, q, b, c) || doIntersect(p, q, b, d) || doIntersect(p, q, c, d) ||
+                    doIntersect(p, r, a, b) || doIntersect(p, r, a, c) || doIntersect(p, q, a, d) ||
+                    doIntersect(p, r, b, c) || doIntersect(p, r, b, d) || doIntersect(p, r, c, d) ||
+                    doIntersect(q, r, a, b) || doIntersect(q, r, a, c) || doIntersect(q, q, a, d) ||
+                    doIntersect(q, r, b, c) || doIntersect(q, r, b, d) || doIntersect(q, r, c, d)) {
                     WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
                     break;
                 }
-
-                if (doIntersect(p, q, a, c)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, q, a, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, q, b, c)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, q, b, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, q, c, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, r, a, b)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, r, a, c)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, q, a, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, r, b, c)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, r, b, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(p, r, c, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(q, r, a, b)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(q, r, a, c)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(q, q, a, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(q, r, b, c)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(q, r, b, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
-                if (doIntersect(q, r, c, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
-                    break;
-                }
-
             }
         }
     }
