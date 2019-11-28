@@ -127,11 +127,9 @@ class Triangle {
 
         vector<Point> createShifts(Point dimensions);
 
-        int getArea() const {return _area;};
-        int getXC() const {return _xC;};
-        void setXC(int x) {_xC = x;};
-        int getYC() const {return _yC;};
-        void setYC(int y) {_yC = y;};
+        int inline getArea() const {return _area;};
+        int inline getXC() const {return _xC;};
+        int inline getYC() const {return _yC;};
 
         void printDimensions() const;
         void printTriangles() const;
