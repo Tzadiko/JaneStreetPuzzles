@@ -59,16 +59,17 @@ struct Point {
  *  can achieve while simultaneously keeping the square (on the grid)
  *  inside of it.
  *
- *  For example, a triangle of are 20 can have dimensions 2 by 20, 4 by 10, and 8 by 5
+ *  For example, a triangle of area 20 can have dimensions 2 by 20, 4 by 10, and 8 by 5
  *  EACH of these dimensions allows us to move the triangle in a given direction while maintaining
  *  that the box that represents its area lies within it. For example,
  *
- *  |\
- *  | \
- *  |  \
- *  |   \
- *  |5   \
- *  ------\
+ *  |\              
+ *  | \           |\      
+ *  |  \          | \   
+ *  |   \         |  \
+ *  |    \        |   \
+ *  |5____\       |5   \
+ *                |_____\        
  *
  *  The following triangle can be moved downwads at most twice, and over left at most once
  *  before the number 5 falls outside of its perimeter.
