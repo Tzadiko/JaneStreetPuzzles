@@ -621,13 +621,6 @@ int main() {
     // Every three points will be the correct vertices of an individual triangle
     vector<Point> ExistingPoints;
 
-    // WIN = { T1(2,3,0), T2(18,7,0), T3(12,2,1), T4(4,13,1), T5(3,4,2), T6(7,11,2),
-    //         T7(6,16,2), T8(6,0,3), T9(9,3,4), T10(11,9,4), T11(8,14,5), T12(4,0,6),
-    //         T13(14,5,6), T14(18,15,6), T15(20,8,8), T16(7,1,10), T17(3,11,10),
-    //         T18(3,16,10), T19(3,2,11), T20(7,7,12), T21(10,13,12), T22(5,16,13),
-    //         T23(4,0,14), T24(10,5,14), T25(3,12,14),  T26(12,3,15), T27(7,14,15),
-    //         T28(8,9,16), T29(2,13,16) };
-
     preProcessValidTriangles(WIN);
 
     // Run the recursive solution.
