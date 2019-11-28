@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include <algorithm>
 
 using std::vector;
@@ -109,10 +110,15 @@ class Triangle {
         vector<PossibleShifts> _combinations;
         vector<Point> _allTriangles; 
 
-        Triangle(int area, int X, int Y, direction dir = direction::UP) : _xC(X), _yC(Y), _area(area), _direction(dir) {
+        Triangle(int area, int X, int Y, direction dir = direction::UP) : 
+            _xC(X),
+            _yC(Y),
+            _area(area),
+            _direction(dir)
+{
             createDimensions(_area, _combinations);
             makeCombinations(_xC,_yC,_combinations,_allTriangles);
-        };
+};
 
         void createDimensions(int area, vector<PossibleShifts>& combinations);
         void makeCombinations(int X, int Y, vector<PossibleShifts>& combinations, vector<Point>& allTriangles);
@@ -428,34 +434,39 @@ bool pointInTriangle (Point pt, Point v1, Point v2, Point v3) {
 
     return !(has_neg && has_pos);
 }
+/*
+ * Given a vector of valid triangles (remember, each triangle is 3 points that are stored in the vector in sequence),
+ * figure out whether another triangle (marked by points p, q, and r) is contained within it
+ */
 
-bool triangleIsContainedInOtherTriangle(vector<Point>& e, Point p, Point q, Point r) { 
-    for (int i{}; i < e.size(); i += 3) {
-        if (pointInTriangle(p,e[i],e[i+1],e[i+2]) && pointInTriangle(q,e[i],e[i+1],e[i+2]) && pointInTriangle(r,e[i],e[i+1],e[i+2])) return true;
+
+bool triangleIsContainedInOtherTriangle(vector<Point>& triangleVertices, Point p, Point q, Point r) { 
+    for (int i{}; i < triangleVertices.size(); i += 3) {
+        if (pointInTriangle(p,triangleVertices[i],triangleVertices[i+1],triangleVertices[i+2]) &&
+            pointInTriangle(q,triangleVertices[i],triangleVertices[i+1],triangleVertices[i+2]) && 
+            pointInTriangle(r,triangleVertices[i],triangleVertices[i+1],triangleVertices[i+2])) return true;
     }
     return false;
 }
 
 /*
  * Given a vector of valid triangles (remember, each triangle is 3 points that are stored in the vector in sequence),
- * figure out whether another triangle with vertices p, q, and r, lie within it.
+ * and three points (p, q, and r), find out whether a point from the vector lies within these three points.
  */
 
-bool triangleIsContainingOtherTriangle(vector<Point>& containingTriangleVertices, Point p, Point q, Point r) {
-    for (int i{}; i < containingTriangleVertices.size(); i+=3) {
-        Point vertexOne(containingTriangleVertices[i].x,containingTriangleVertices[i].y);
-        Point vertexTwo(containingTriangleVertices[i+1].x, containingTriangleVertices[i+1].y);
-        Point vertexThree(containingTriangleVertices[i+2].x, containingTriangleVertices[i+2].y);
-        if (pointInTriangle(vertexOne, p, q, r) && pointInTriangle(vertexTwo, p, q, r) && pointInTriangle(vertexThree, p, q, r)) return true;
+bool triangleIsContainingOtherTriangle(vector<Point>& triangleVertices, Point p, Point q, Point r) {
+    for (int i{}; i < triangleVertices.size(); i += 3) {
+        Point vertexOne(triangleVertices[i].x,triangleVertices[i].y);
+        Point vertexTwo(triangleVertices[i+1].x, triangleVertices[i+1].y);
+        Point vertexThree(triangleVertices[i+2].x, triangleVertices[i+2].y);
+
+        if (pointInTriangle(vertexOne, p, q, r) &&
+            pointInTriangle(vertexTwo, p, q, r) && 
+            pointInTriangle(vertexThree, p, q, r)) return true;
+            
     }
     return false;
 }
-
-/*
- * Given the dimensions of the triangle (base and height), find our all the valid offsets to its vertices
- * that keep our square inside our triangle's dimensions
- */
-
 
 
 ////////////////////////////////////
@@ -580,7 +591,7 @@ void preProcessValidTriangles(vector<Triangle>& WIN) {
 
 
 
-void printSolution(vector<Point> e) {
+void printSolution(const vector<Point>& e) {
     for (int j{}; j < e.size(); j += 3) {
         cout << "Printing Triangle Coordinates: ";
         cout << "(" << e[j].x << "," << e[j].y <<  ") | (" << e[j+1].x << "," << e[j+1].y << ") | (" << e[j+2].x << "," << e[j+2].y << ") ";
@@ -591,10 +602,8 @@ void printSolution(vector<Point> e) {
 
 void mySolution(vector<Triangle>& WIN, int index, vector<Point> e) {
 
-    for (int x{}; x < index; x++) {
-        cout << "-";
-    }
-    cout << index << "\n";
+    // Print the index/triangle I'm operating on for clarity.
+    cout << (std::string(index, '-')) << index << endl;
 
     if (index == WIN.size()) {
 
@@ -667,13 +676,9 @@ void mySolution(vector<Triangle>& WIN, int index, vector<Point> e) {
             }
 
             if (triangleValid) {
-                    e.push_back(q);
-                    e.push_back(p);
-                    e.push_back(r);
+                    e.insert(e.end(), {q, p, r});
                     mySolution(WIN, index + 1, e);
-                    e.pop_back();
-                    e.pop_back();
-                    e.pop_back();
+                    e.erase(e.end() - 3, e.end());
             }
         }
     }
