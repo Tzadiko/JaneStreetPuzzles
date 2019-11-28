@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/mySolution.dir/TriTriAgainAgain.cpp.o  -o mySolution.exe 

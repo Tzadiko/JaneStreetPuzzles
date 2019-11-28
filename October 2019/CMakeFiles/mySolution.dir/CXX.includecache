@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/tzadiko/Code/C++/randomWork/janeStreetPuzzle/mySolutions/October 2019/TriTriAgainAgain.cpp
+iostream
+-
+vector
+-
+algorithm
+-
+

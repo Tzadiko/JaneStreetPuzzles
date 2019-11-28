@@ -1,0 +1,3 @@
+/home/tzadiko/Code/C++/randomWork/janeStreetPuzzle/mySolutions/October 2019/CMakeFiles/rebuild_cache.dir
+/home/tzadiko/Code/C++/randomWork/janeStreetPuzzle/mySolutions/October 2019/CMakeFiles/mySolution.dir
+/home/tzadiko/Code/C++/randomWork/janeStreetPuzzle/mySolutions/October 2019/CMakeFiles/edit_cache.dir
