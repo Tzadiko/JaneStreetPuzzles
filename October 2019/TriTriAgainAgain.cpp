@@ -74,7 +74,7 @@ struct PossibleShifts {
 /*
  * The triangle class is where all the action happens.
  *      Variables:
- *          _xC and _yC are the X and Y coordinates of the right angle triangle.
+ *          _x and _y are the X and Y coordinates of the right angle triangle.
  *          _area is the area of the triangle.
  *      
  *      _combinations holds all the possible dimensions of the triangle, as well as the respective
@@ -89,8 +89,8 @@ struct PossibleShifts {
 class Triangle {
     private:
 
-        int _xC;
-        int _yC;
+        int _x;
+        int _y;
         int _area;
     
     public:
@@ -98,23 +98,23 @@ class Triangle {
         vector<PossibleShifts> _combinations;
         vector<Point> _allTriangles; 
 
-        Triangle(int area, int X, int Y) : 
-            _xC(X),
-            _yC(Y),
+        Triangle(int area, int x, int y) : 
+            _x(x),
+            _y(y),
             _area(area)
 {
             createDimensions(_area, _combinations);
-            makeCombinations(_xC,_yC,_combinations,_allTriangles);
+            makeCombinations(_x,_y,_combinations,_allTriangles);
 };
 
         void createDimensions(int area, vector<PossibleShifts>& combinations);
-        void makeCombinations(int X, int Y, vector<PossibleShifts>& combinations, vector<Point>& allTriangles);
+        void makeCombinations(int x, int y, vector<PossibleShifts>& combinations, vector<Point>& allTriangles);
 
         vector<Point> createShifts(Point dimensions);
 
         int inline getArea() const {return _area;};
-        int inline getXC() const {return _xC;};
-        int inline getYC() const {return _yC;};
+        int inline getXC() const {return _x;};
+        int inline getYC() const {return _y;};
 
         void printDimensions() const;
         void printTriangles() const;
