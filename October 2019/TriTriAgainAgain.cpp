@@ -31,18 +31,6 @@ bool pointInTriangle (Point pt, Point v1, Point v2, Point v3);
 ///////////////
 
 /*
- *  Represents the orientations of triangles on
- *  the grid.
- */
-
-enum class direction {
-    UP, // 0
-    RIGHT, // 1
-    DOWN, // 2
-    LEFT // 3
-};
-
-/*
  *  Self-explanatory
  */
 
@@ -88,7 +76,6 @@ struct PossibleShifts {
  *      Variables:
  *          _xC and _yC are the X and Y coordinates of the right angle triangle.
  *          _area is the area of the triangle.
- *          _direction is the orientation of the triangle (UP, DOWN, LEFT, RIGHT)
  *      
  *      _combinations holds all the possible dimensions of the triangle, as well as the respective
  *      valid offsets for each dimension
@@ -105,18 +92,16 @@ class Triangle {
         int _xC;
         int _yC;
         int _area;
-        direction _direction;
     
     public:
 
         vector<PossibleShifts> _combinations;
         vector<Point> _allTriangles; 
 
-        Triangle(int area, int X, int Y, direction dir = direction::UP) : 
+        Triangle(int area, int X, int Y) : 
             _xC(X),
             _yC(Y),
-            _area(area),
-            _direction(dir)
+            _area(area)
 {
             createDimensions(_area, _combinations);
             makeCombinations(_xC,_yC,_combinations,_allTriangles);
@@ -214,7 +199,7 @@ void Triangle::printDimensions() const {
  *  This is a very meaty function. All our base/height and shift combinations
  *  apply to a triangle that is upright. But what if our triangle needs to point rightwards, 
  *  downwards, or even to the left? Well, we can take our potential shifts (offsets) for each dimension
- *  and create a corresponding shift/offset for a triangle in the opposite direction. 
+ *  and create a corresponding shift/offset for a triangle in the other directions. 
  *
  *  (aX, aY), (bX, bY), (cX, cY) will each represent valid triangle vertices for our triangle.
  *  The vector _allTriangles will contain three vertices for each valid triangle placement on our board.
@@ -281,7 +266,7 @@ void Triangle::makeCombinations(int X, int Y, vector<PossibleShifts>& combinatio
     }
 
     /*
-     * All valid triangle combinations in the rightward direction.
+     * All valid triangle combinations in the downwards direction.
      */
 
     for (int i{}; i < combinations.size(); ++i) { 
@@ -306,7 +291,7 @@ void Triangle::makeCombinations(int X, int Y, vector<PossibleShifts>& combinatio
     }
 
     /*
-     * All valid triangle combinations in the rightward direction.
+     * All valid triangle combinations in the leftward direction.
      */
 
     for (int i{}; i < combinations.size(); i++) { 
