@@ -12,7 +12,7 @@ using std::endl;
 ///////////////
 
 /*
- *  Represents the lengt of the square grid in which the triangles lie. 
+ *  Represents the length of the square grid in which the triangles lie. 
  */
 
 const int MATRIX_MAX = 17;
@@ -500,7 +500,9 @@ void preProcessValidTriangles(vector<Triangle>& WIN) {
 void printSolution(const vector<Point>& e) {
     for (int j{}; j < e.size(); j += 3) {
         cout << "Printing Triangle Coordinates: ";
-        cout << "(" << e[j].x << "," << e[j].y <<  ") | (" << e[j+1].x << "," << e[j+1].y << ") | (" << e[j+2].x << "," << e[j+2].y << ") ";
+        cout << "(" << e[j].x << "," << e[j].y <<  ") | (";
+        cout << e[j+1].x << "," << e[j+1].y << ") | (" ;
+        cout << e[j+2].x << "," << e[j+2].y << ") ";
         cout << "\n";
     }
     cout << "\n";
@@ -516,76 +518,77 @@ void mySolution(vector<Triangle>& WIN, int index, vector<Point> solutionVector) 
         printSolution(solutionVector);
         exit(0);
 
-    } else {
+    }
 
-        for (int i{}; i < WIN[index]._allTriangles.size(); i += 3) {
-            Point p = WIN[index]._allTriangles[i];
-            Point q = WIN[index]._allTriangles[i+1];
-            Point r = WIN[index]._allTriangles[i+2];
-            
-            bool triangleValid = true;
-            for (int j{}; j < solutionVector.size(); j += 3) {
-                if (doIntersect(p,q,solutionVector[j],solutionVector[j+1])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(p,q,solutionVector[j],solutionVector[j+2])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(p,q,solutionVector[j+2],solutionVector[j+1])) {
-                        triangleValid = false; 
-                        break;
-                }
-
-                if (doIntersect(p,r,solutionVector[j],solutionVector[j+1])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(p,r,solutionVector[j],solutionVector[j+2])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(p,r,solutionVector[j+2],solutionVector[j+1])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(q,r,solutionVector[j],solutionVector[j+1])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(q,r,solutionVector[j],solutionVector[j+2])) {
-                        triangleValid = false;
-                        break;
-                }
-
-                if (doIntersect(q,r,solutionVector[j+2],solutionVector[j+1])) {
-                        triangleValid = false; 
-                        break;
-                }
-
-            }
-
-            if (triangleValid) {
-                if(triangleIsContainedInOtherTriangle(solutionVector,p,q,r)) {
-                    triangleValid = false; // If this triangle is in others
-                }
-                if(triangleIsContainingOtherTriangle(solutionVector,p,q,r)) {
+    for (int i{}; i < WIN[index]._allTriangles.size(); i += 3) {
+        Point p = WIN[index]._allTriangles[i];
+        Point q = WIN[index]._allTriangles[i+1];
+        Point r = WIN[index]._allTriangles[i+2];
+        
+        bool triangleValid = true;
+        for (int j{}; j < solutionVector.size(); j += 3) {
+            if (doIntersect(p,q,solutionVector[j],solutionVector[j+1])) {
                     triangleValid = false;
-                }
+                    break;
             }
 
-            if (triangleValid) {
-                    solutionVector.insert(solutionVector.end(), {q, p, r});
-                    mySolution(WIN, index + 1, solutionVector);
-                    solutionVector.erase(solutionVector.end() - 3, solutionVector.end());
+            if (doIntersect(p,q,solutionVector[j],solutionVector[j+2])) {
+                    triangleValid = false;
+                    break;
             }
+
+            if (doIntersect(p,q,solutionVector[j+2],solutionVector[j+1])) {
+                    triangleValid = false; 
+                    break;
+            }
+
+            if (doIntersect(p,r,solutionVector[j],solutionVector[j+1])) {
+                    triangleValid = false;
+                    break;
+            }
+
+            if (doIntersect(p,r,solutionVector[j],solutionVector[j+2])) {
+                    triangleValid = false;
+                    break;
+            }
+
+            if (doIntersect(p,r,solutionVector[j+2],solutionVector[j+1])) {
+                    triangleValid = false;
+                    break;
+            }
+
+            if (doIntersect(q,r,solutionVector[j],solutionVector[j+1])) {
+                    triangleValid = false;
+                    break;
+            }
+
+            if (doIntersect(q,r,solutionVector[j],solutionVector[j+2])) {
+                    triangleValid = false;
+                    break;
+            }
+
+            if (doIntersect(q,r,solutionVector[j+2],solutionVector[j+1])) {
+                    triangleValid = false; 
+                    break;
+            }
+
+        }
+
+        if (triangleValid) {
+            
+            if(triangleIsContainedInOtherTriangle(solutionVector,p,q,r)) {
+                triangleValid = false; // If this triangle is in others
+            }
+
+            if(triangleIsContainingOtherTriangle(solutionVector,p,q,r)) {
+                triangleValid = false;
+            }
+        }
+
+        if (triangleValid) {
+                solutionVector.insert(solutionVector.end(), {q, p, r});
+                mySolution(WIN, index + 1, solutionVector);
+                solutionVector.erase(solutionVector.end() - 3, solutionVector.end());
         }
     }
     return;  
