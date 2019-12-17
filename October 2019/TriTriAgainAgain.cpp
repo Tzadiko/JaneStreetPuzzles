@@ -468,18 +468,18 @@ bool triangleIsContainingOtherTriangle(vector<Point>& triangleVertices, Point p,
      *  THIS CUTS RUNTIME IN HALF.
      */
 
-void preProcessValidTriangles(vector<Triangle>& WIN) {
-    for (int i{}; i < WIN.size(); i++) {
-        for (int j{}; j < WIN[i]._allTriangles.size(); j += 3) {
-            Point p(WIN[i]._allTriangles[j].x, WIN[i]._allTriangles[j].y);
-            Point q(WIN[i]._allTriangles[j+1].x, WIN[i]._allTriangles[j+1].y);
-            Point r(WIN[i]._allTriangles[j+2].x, WIN[i]._allTriangles[j+2].y);
-            for (int k{}; k < WIN.size(); k++) {
+void preProcessValidTriangles(vector<Triangle>& board) {
+    for (int i{}; i < board.size(); i++) {
+        for (int j{}; j < board[i]._allTriangles.size(); j += 3) {
+            Point p(board[i]._allTriangles[j].x, board[i]._allTriangles[j].y);
+            Point q(board[i]._allTriangles[j+1].x, board[i]._allTriangles[j+1].y);
+            Point r(board[i]._allTriangles[j+2].x, board[i]._allTriangles[j+2].y);
+            for (int k{}; k < board.size(); k++) {
                 if (k == i) continue;
-                Point a(WIN[k].getXC(), WIN[k].getYC());
-                Point b(WIN[k].getXC(), WIN[k].getYC() + 1);
-                Point c(WIN[k].getXC() + 1, WIN[k].getYC() + 1);
-                Point d(WIN[k].getXC() + 1, WIN[k].getYC());
+                Point a(board[k].getXC(), board[k].getYC());
+                Point b(board[k].getXC(), board[k].getYC() + 1);
+                Point c(board[k].getXC() + 1, board[k].getYC() + 1);
+                Point d(board[k].getXC() + 1, board[k].getYC());
 
                 if (doIntersect(p, q, a, b) || doIntersect(p, q, a, c) || doIntersect(p, q, a, d) ||
                     doIntersect(p, q, b, c) || doIntersect(p, q, b, d) || doIntersect(p, q, c, d) ||
@@ -487,7 +487,7 @@ void preProcessValidTriangles(vector<Triangle>& WIN) {
                     doIntersect(p, r, b, c) || doIntersect(p, r, b, d) || doIntersect(p, r, c, d) ||
                     doIntersect(q, r, a, b) || doIntersect(q, r, a, c) || doIntersect(q, q, a, d) ||
                     doIntersect(q, r, b, c) || doIntersect(q, r, b, d) || doIntersect(q, r, c, d)) {
-                    WIN[i]._allTriangles.erase(WIN[i]._allTriangles.begin() + j, WIN[i]._allTriangles.begin() + j + 3);
+                    board[i]._allTriangles.erase(board[i]._allTriangles.begin() + j, board[i]._allTriangles.begin() + j + 3);
                     break;
                 }
             }
@@ -497,33 +497,33 @@ void preProcessValidTriangles(vector<Triangle>& WIN) {
 
 
 
-void printSolution(const vector<Point>& e) {
-    for (int j{}; j < e.size(); j += 3) {
+void printSolution(const vector<Point>& board) {
+    for (int j{}; j < board.size(); j += 3) {
         cout << "Printing Triangle Coordinates: ";
-        cout << "(" << e[j].x << "," << e[j].y <<  ") | (";
-        cout << e[j+1].x << "," << e[j+1].y << ") | (" ;
-        cout << e[j+2].x << "," << e[j+2].y << ") ";
+        cout << "(" << board[j].x << "," << board[j].y <<  ") | (";
+        cout << board[j+1].x << "," << board[j+1].y << ") | (" ;
+        cout << board[j+2].x << "," << board[j+2].y << ") ";
         cout << "\n";
     }
     cout << "\n";
 }
 
-void mySolution(vector<Triangle>& WIN, int index, vector<Point> solutionVector) {
+void mySolution(vector<Triangle>& board, int index, vector<Point> solutionVector) {
 
     // Print the index/triangle I'm operating on for clarity as the program cracks the puzzle.
     cout << (std::string(index, '-')) << index << endl;
 
-    if (index == WIN.size()) {
+    if (index == board.size()) {
 
         printSolution(solutionVector);
         exit(0);
 
     }
 
-    for (int i{}; i < WIN[index]._allTriangles.size(); i += 3) {
-        Point p = WIN[index]._allTriangles[i];
-        Point q = WIN[index]._allTriangles[i+1];
-        Point r = WIN[index]._allTriangles[i+2];
+    for (int i{}; i < board[index]._allTriangles.size(); i += 3) {
+        Point p = board[index]._allTriangles[i];
+        Point q = board[index]._allTriangles[i+1];
+        Point r = board[index]._allTriangles[i+2];
         
         bool triangleValid = true;
         for (int j{}; j < solutionVector.size(); j += 3) {
@@ -587,7 +587,7 @@ void mySolution(vector<Triangle>& WIN, int index, vector<Point> solutionVector) 
 
         if (triangleValid) {
                 solutionVector.insert(solutionVector.end(), {q, p, r});
-                mySolution(WIN, index + 1, solutionVector);
+                mySolution(board, index + 1, solutionVector);
                 solutionVector.erase(solutionVector.end() - 3, solutionVector.end());
         }
     }
@@ -596,23 +596,27 @@ void mySolution(vector<Triangle>& WIN, int index, vector<Point> solutionVector) 
 
 int main() {
 
-    // Holds our 29 triangles.
+    // This is our initial board, as provided in the puzzle.
+    // The board contains 29 triangles. 
     // Remember: Triangle Constructor(Area, X, Y)
-    vector<Triangle> WIN = { {2,3,0}, {18,7,0}, {12,2,1}, {4,13,1}, {3,4,2}, {7,11,2},
-                             {6,16,2}, {6,0,3}, {9,3,4}, {11,9,4}, {8,14,5}, {4,0,6},
-                             {14,5,6}, {18,15,6}, {20,8,8}, {7,1,10}, {3,11,10},
-                             {3,16,10}, {3,2,11}, {7,7,12}, {10,13,12}, {5,16,13},
-                             {4,0,14}, {10,5,14}, {3,12,14},  {12,3,15}, {7,14,15},
-                             {8,9,16}, {2,13,16} };
+    vector<Triangle> initialBoard = { {2,3,0}, {18,7,0}, {12,2,1}, {4,13,1}, {3,4,2}, {7,11,2},
+                                     {6,16,2}, {6,0,3}, {9,3,4}, {11,9,4}, {8,14,5}, {4,0,6},
+                                     {14,5,6}, {18,15,6}, {20,8,8}, {7,1,10}, {3,11,10},
+                                     {3,16,10}, {3,2,11}, {7,7,12}, {10,13,12}, {5,16,13},
+                                     {4,0,14}, {10,5,14}, {3,12,14},  {12,3,15}, {7,14,15},
+                                     {8,9,16}, {2,13,16} };
 
-    // Will hold the answer 
+    // This vector will hold the answer to our puzzle.
     // Every three points will be the correct vertices of an individual triangle
-    vector<Point> ExistingPoints;
+    vector<Point> correctTriangleVertices;
+    
+    // Get rid of any valid triangle orientations that intercepts with valid orientations
+    // before searching for the solution. This cuts runtime in half, as it rids us of checking over
+    // 400 triangles that are valid when viewed in isolation, but whom intersect with other existing triangles.
+    preProcessValidTriangles(initialBoard);
 
-    preProcessValidTriangles(WIN);
-
-    // Run the recursive solution.
-    mySolution(WIN,0,ExistingPoints);
+    // Run the recursive solution. 
+    mySolution(initialBoard, 0, correctTriangleVertices);
 
     return 0;
 }
